@@ -1,14 +1,27 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <!-- <transition name="page" mode="out-in"> -->
     <router-view/>
+    <!-- </transition> -->
   </div>
 </template>
 
 <style lang="scss">
+@font-face {
+  font-family: 'Myfont';
+  src: url('assets/CirceRounded-Regular.otf');
+}
+@font-face {
+  font-family: 'Myfont Bold';
+  src: url('assets/CirceRounded-Bold.otf');
+}
+html {
+  // scroll-behavior: smooth;
+}
+  *{
+    margin: 0;
+  }
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -16,14 +29,28 @@
   text-align: center;
   color: #2c3e50;
 }
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+
+
+.page-enter-active{
+  transition: all 0.5s;
 }
+.page-enter{
+  transform: translateX(calc(-100vw + ((100vw - 100%)/2)))
+}
+.page-enter-to{
+  transform: translateX(0);
+}
+
+.page-leave-active {
+  transition: all 0.5s;
+}
+
+.page-leave{
+  /*  */
+}
+.page-leave-to {
+    transform: translateX(calc(100% + ((100vw - 100%)/2)));
+}
+
 </style>
+
