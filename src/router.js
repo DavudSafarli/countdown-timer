@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
-import Create from './views/Create.vue'
+import store from './store'
 Vue.use(Router)
 
 const router = new Router({
@@ -10,83 +9,123 @@ const router = new Router({
 	routes: [{
 			path: '/',
 			name: 'home',
-			component: Home
+			component: () => import('./views/main/Fullpage.vue')
 		},
 		{
-			path: '/p',
-			name: 'p',
-			component: Home
-		},
-		{
-			path: '/create',
-			name: 'create',
-			component: Create
+			path: '/:id',
+			name: 'timer',
+			component: () => import('./views/Show.vue')
 		},
 	]
 })
+console.log(router.mode)
+// javascript search table
+let pages = {
+	explore: '1',
+	index: '2',
+	create: '3',
+	about: '4',
+	
+}
+let rulesFrom = {
+	index: () => {
+		store.state.stopHomeTimer = true;
+		console.log(`set store.state.stopHomeTimer to ${store.state.stopHomeTimer}`)
+	},
+	create: ()=> true,
+	about: ()=> store.state.state !== null,
+	explore: ()=> true
+}
+let rules = {
+	index: ()=> {
+		store.state.stopHomeTimer = false;
+		console.log(`set store.state.stopHomeTimer to ${store.state.stopHomeTimer}`)
+		return true
+	},
+	create: ()=> true,
+	about: ()=> true,
+	explore: ()=> true
+}
 
 export default router
 router.afterEach((to, from) => {
-	// console.log(from, to)
-	let perc = '-=100%'
-	let $to = to.hash
-	let $from = from.hash
-	// console.log($from, $to)
-	if (($to == "" && $from == "") || ($to == $from)) {
-		return;
-	}
-
-	if ($from == "") {
-		$from = 'container1'
-	} else {
-		$from = $from.split('#').pop()
-	}
-	if ($to == "") {
-		$to = 'container1'
-	} else {
-		$to = $to.split('#').pop()
-	}
-	// console.log($from, $to)
-	let between = $to.split('container').pop() - $from.split('container').pop()
-	// console.log('from: ' + $from.split('container').pop() + '  , to: ' + $to.split('container').pop())
-	let $forward = (between > 0) ? true : false
-	// console.log($forward)
-
-	perc = Math.abs(between) * 100 + '%';
-	let perc2 = '40%';
-	if ($forward) {
-		perc = '-=' + perc
-		perc2 = '-=' + perc2
-	} else {
-		perc = '+=' + perc
-		perc2 = '+=' + perc2
-	}
-	console.log(perc, perc2)
-
-	Vue.nextTick(() => {
-		tween()
-	})
-	function tween() {
-
-		let $cur = document.querySelector('#' + $from)
-		let $next = document.querySelector('#' + $to)
-		let main = document.querySelector('#home')
+	console.log(store.state)
+	parallax();
 	
-		console.log($cur, $next)
-		// TweenLite.fromTo($next, 2, {
-		// 	x: '-=40%'
-		// }, {
-		// 	x: '0%'
-		// });
+	function parallax(){
+		// make parallax effect only index page
+		if(to.path != "/"){
+			console.log('return')
+			return
+		}
+		
+		let perc = '%'
+		let $to = to.hash
+		let $from = from.hash
+		// no parallax, if user loads index page
+		if (($to == "" && $from == "") || ($to == $from)) {
+			
+			return;
+		}
+		console.log(from, $to)
+		if ($from == "") {
+			$from = 'index'
+		} else {
+			$from = $from.split('#').pop() // get id of current fullpage
+		}
+		if ($to == "") {
+			$to = 'index'
+		} else {
+			$to = $to.split('#').pop() // get id of current fullpage
+		}
+		
+		rulesFrom[$from]();
+		// if rules not allow, return to previous page
+		if(!rules[$to]()){
+			console.log('error')
+			return router.replace({name: 'home'})
+		}
+		console.log('fak yu')
+		let $to_id = pages[$to]
+		let $from_id = pages[$from]
+		console.log($to, $from)
+		let $forward = ($to_id > $from_id) ? true : false
+		console.log($forward)
+		perc = ($to_id - 1)*-100 + '%'
 
-		// TweenMax.to($cur, 1, {
-		// 	x: '-=40%'
-		// });
-
-		TweenLite.to(main, 1, 
-		{
-		    x: perc
-		});
+		Vue.nextTick(() => {
+			tween()
+		})
+		function tween() {
+			
+			let $cur = document.querySelector('#' + $from)
+			let $next = document.querySelector('#' + $to)
+			let main = document.querySelector('#fullpage')
+			
+			TweenLite.set($cur, {
+				css: {zIndex:2}
+			})
+			TweenLite.set($next, {
+				css: {zIndex:1}
+			})
+			if($forward){
+				TweenLite.fromTo($next, 1, {
+					x: '-=40%'
+				}, {
+					x: '0%'
+				});
+			}
+			else{
+				TweenLite.fromTo($next, 1, {
+					x: '+=40%'
+				}, {
+					x: '0%'
+				});
+			}
+			TweenLite.to(main, 1, 
+				{
+					x: perc
+				});
+		}
 	}
-
 })

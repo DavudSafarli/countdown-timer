@@ -1,56 +1,45 @@
 <template>
   <div id="app">
     <!-- <transition name="page" mode="out-in"> -->
-    <router-view/>
+    <router-view :key="$route.path"></router-view>
     <!-- </transition> -->
   </div>
 </template>
 
 <style lang="scss">
+
 @font-face {
-  font-family: 'Myfont';
-  src: url('assets/CirceRounded-Regular.otf');
+  font-family: 'Pacifico';
+  src: url('assets/Pacifico-Regular.woff2') format("woff2");
 }
 @font-face {
-  font-family: 'Myfont Bold';
-  src: url('assets/CirceRounded-Bold.otf');
+  font-family: 'Museo';
+  src: url('assets/museo.woff2') format('woff2');
 }
-html {
-  // scroll-behavior: smooth;
+body{
+  margin: 0;
 }
-  *{
-    margin: 0;
-  }
 
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family:  sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
 }
-
-
-.page-enter-active{
-  transition: all 0.5s;
+.fullpage-page{
+    overflow: hidden;
+    display: flex;
+    min-width: 100vw;
+    justify-content: center;
+    align-items: center;
+    position: relative;
 }
-.page-enter{
-  transform: translateX(calc(-100vw + ((100vw - 100%)/2)))
+html, body, #app, #fullpage, .fullpage-page{
+  height: 100%!important;
 }
-.page-enter-to{
-  transform: translateX(0);
+*{
+  margin: 0;
 }
-
-.page-leave-active {
-  transition: all 0.5s;
-}
-
-.page-leave{
-  /*  */
-}
-.page-leave-to {
-    transform: translateX(calc(100% + ((100vw - 100%)/2)));
-}
-
 </style>
 

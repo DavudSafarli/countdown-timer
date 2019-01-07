@@ -1,119 +1,80 @@
 <template>
-<div id="home">
-    <div class="container c1" id="container1">
-        <div class="left">
-            <a class="button b-30 button-left" href=""><i class="fas fa-angle-double-left"></i>Explore</a>
-        </div>
-        <div class="right">
-
-            <a @click.prevent="a" class="button b-30 button-right" href="#container2">Create<i class="fas fa-angle-double-right"></i></a>
-        </div>
-        <div class="heading-text">
-            <h1>Create & Share</h1>
-        </div>
-        <timer></timer>
+<div class="fullpage-page" ref="a">
+    <div class="left">
+        <a @click.prevent="$emit('link', $event)" class="button b-30 button-left" href="#explore">
+        <i class="fas fa-angle-double-left"></i>Explore
+      </a>
     </div>
-    <div id="container2" class="container c2">
-        <create></create>
+    <div class="right">
+        <a
+        @click.prevent="$emit('link', $event)"
+        class="button b-30 button-right"
+        href="#create">
+        Create
+        <i class="fas fa-angle-double-right"></i>
+      </a>
     </div>
-    <div id="container3" class="container c3">
-        <!-- <create></create> -->
+    <div class="heading-text">
+        <h1>Create & Share</h1>
     </div>
-    <div id="container4" class="container c4">
-        <!-- <create></create> -->
-    </div>
+    <timer v-if="render" :day="date.day" :hour="date.hour" :min="date.min" :sec="date.sec" :stop="get_stopHomeTimer"></timer>
 </div>
 </template>
 
 <script>
+import { mapMutations, mapGetters } from "vuex";
 export default {
     methods: {
-        a(e) {
-            let href = e.currentTarget.getAttribute('href')
-            this.$router.push(href)
-        }
+        ...mapMutations(['set_state'])
+    },
+    data() {
+        return {
+            render: false,
+            date: null,
+            stop: false
+        };
     },
     mounted() {
-        // document.querySelectorAll('.button').forEach(element => {
-        //     element.addEventListener('click', (e)=>{
-        //         e.preventDefault()
-        //     })
-        // });
-        let els = document.querySelectorAll('.container')
-        let l = els.length
-        let ul = document.createElement('ul')
-        for (let i = 0; i < l; i++) {
-            let id = els[i].getAttribute('id')
-            let li = document.createElement('li')
-            let a = document.createElement('a')
-            a.setAttribute('href', '#' + id)
-            li.appendChild(a)
-            ul.appendChild(li)
-            els[i].setAttribute('data-page-id', i)
-            els[i].style.zIndex = l + 1 - i
+        let vue = this
+        if(document.readyState ==  'complete'){
+            doWhenMount();
+        }else{
+            window.addEventListener('load', doWhenMount(), false)
         }
 
-        // this.refs.nav.
+        function doWhenMount() {
+            console.log('fully loaded')
+            let date = [2020, 1, 2, 24, 0, 0];
+            let time = vue.$store.dispatch("create", {
+                date,
+                timezone: ''
+            }).then(res => {
+                vue.date = res;
+                vue.render = true;
+            });
+        }
+    },
+    computed: {
+        ...mapGetters(['get_stopHomeTimer'])
     }
-}
+};
 </script>
 
-<style>
-
-html {
-    overflow: hidden;
-}
-#home {
-    display: flex;
-}
-
-.c2 {
-    background: #d63031;
-}
-.c3{
-    background: black;
-}
-.c4{
-    background: yellow;
-}
-
-.container {
-    flex-grow: 1;
-    min-width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
+<style scoped>
 .left {
-    height: 100%;
-    flex-grow: 1;
     background: #81ecec;
-    position: relative;
 }
 
 .right {
-    height: 100%;
-    flex-grow: 1;
-    background: #d63031;
-    position: relative;
+    background: #e74c3c;
 }
 
 #home .wrap {
     margin-top: -5%;
 }
 
-.fas {
-    margin: 0 5px;
-    margin-top: 2.1%;
-}
-
 .heading-text h1 {
-    z-index: 99;
-    text-align: left;
     position: relative;
-    white-space: nowrap;
     color: #2d3436;
     font-size: calc(20px + 2.5vw);
     margin-top: 8px;
@@ -121,7 +82,6 @@ html {
 }
 
 .heading-text {
-    z-index: 9;
     top: 0;
     position: absolute;
     left: 50%;
@@ -134,7 +94,7 @@ html {
 }
 
 .button {
-    font-family: 'Myfont Bold';
+    font-family: "museo";
     display: flex;
     justify-content: center;
     text-decoration: none;
@@ -172,10 +132,10 @@ html {
 }
 
 .button-right {
-    background-color: rgb(129, 236, 236);
-    box-shadow: 0px 5px 0px 0px rgb(104, 211, 211);
     color: #d63031;
     left: 0;
+    background-color: rgb(129, 236, 236);
+    box-shadow: 0px 5px 0px 0px rgb(104, 211, 211);
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
 }
