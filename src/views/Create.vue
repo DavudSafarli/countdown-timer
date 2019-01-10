@@ -26,7 +26,10 @@ import { mapMutations } from "vuex";
 import { Datetime } from "vue-datetime";
 import axios from "axios";
 export default {
+  
+  
   mounted() {
+    
     let vue = this
     window.addEventListener('load', function(){
       vue.open()

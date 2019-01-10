@@ -37,6 +37,7 @@ export default {
     mounted() {
         let vue = this
         if(document.readyState ==  'complete'){
+            console.log('complete')
             doWhenMount();
         }else{
             window.addEventListener('load', doWhenMount(), false)

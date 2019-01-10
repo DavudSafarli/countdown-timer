@@ -1,8 +1,5 @@
 import firebase from 'firebase/app';
 import 'firebase/firestore';
-// import functions from 'firebase-functions'
-//event 
-//DOMContentLoaded
   
   // Initialize Firebase
   let config = {

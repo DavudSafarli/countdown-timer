@@ -1,5 +1,5 @@
 <template>
-  <div v-if="true" class="fullpage-page about">
+  <div v-if="get_state !== null" class="fullpage-page about">
       <h1 class="flat-shadow">What is it about?</h1>
       <div class="content content-about">
           <div class="input-container">
@@ -37,8 +37,12 @@ export default {
   methods: {
     ...mapMutations(['set_name']),
     store() {
-      console.log('123')
-      this.set_name({name: this.name, about: this.about})
+      let searchFor = []
+      let name = this.name.trim()
+      let about = this.about.trim()
+      searchFor.push(...name.split(' '))
+      searchFor.push(...about.split(' '))
+      this.set_name({name, about, searchFor})
       this.$store.dispatch('store', {router: this.$router})
     }
   }
@@ -111,12 +115,9 @@ textarea{
 }
 .about input,.about textarea{
   background: transparent;
-  border-bottom : 1px solid rgba(255, 255, 255, 0.6);
-}
-input, textarea{
-  z-index: 3;
   border: none;
   border-bottom : 1px solid rgba(255, 255, 255, 0.6);
+  z-index: 3;
   box-sizing: border-box;
   padding: 3px 0 3px 10px;
   width: 100%;

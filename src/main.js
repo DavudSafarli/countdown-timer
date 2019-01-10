@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import AsyncComputed from 'vue-async-computed'
-import {TweenMax} from "gsap/davudMax";
+import {TweenMax, Power2, TimelineLite} from "gsap/TweenMax";
 Vue.use(AsyncComputed)
 
 

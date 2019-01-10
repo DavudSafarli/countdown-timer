@@ -9,12 +9,13 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    //state: null | creating | naming
+    // state: null | creating | naming
     state: null,
     explore: false,
     stopHomeTimer: false,
     name: null,
     about: null,
+    searchFor: null,
     current: null,
     timers: {
       'KWRRVTZn18vHHmEmTcKN':{
@@ -44,9 +45,10 @@ export default new Vuex.Store({
     get_explore: state => state.explore,
     get_state: state => state.state,
     get_mine: state => {
+      console.log('get_mine cagirildim')
       return id => {
         if(state.timers[id])
-          return state.timers[id].date
+          return state.timers[id]
       }
     },
     get_timers: state => {
@@ -58,19 +60,36 @@ export default new Vuex.Store({
     set_state(state, nextState){
       state.state = nextState
     },
-    set_name(state, {name,about}) {
+    set_name(state, {name,about,searchFor}) {
       if (name) state.name = name
       if (about) state.about = about
+      if (searchFor) state.searchFor = searchFor
     },
     set_futureDate(state, date) {
       state.futureDate = date;
     },
     set_timer(state, {id,date}) {
       // store timer locally
+      console.log('set timer')
       Vue.set(state.timers, id, date)
     }
   },
   actions: {
+    search({commit}, key){
+      db.collection('timers')
+      .where('searchFor', 'array-contains', key)
+      .get()
+      .then(async docs=> {
+        docs.forEach(doc => {
+          commit('set_timer', {id: doc.id, date: doc.data()})
+          console.log(doc)
+          console.log(doc.data())
+        });
+      })
+      .catch(e=>{
+        console.log(e)
+      })
+    },
     store({commit,state}, {router}) {
       //this could change
       let timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -81,14 +100,17 @@ export default new Vuex.Store({
         name: state.name,
         about: state.about,
         date: state.futureDate,
-        timezone
+        timezone,
+        searchFor: state.searchFor
       }
+      console.log(`this item is searchable for ${state.searchFor}`)
       console.log(state.name, state.about, state.futureDate)
       var setDoc = db.collection('timers').add(data)
         .then(res => {
+          console.log('set timer store')
           commit('set_timer', {
             id: res.id,
-            data
+            date: data
           })
           router.push({
             name: "timer",
@@ -100,26 +122,45 @@ export default new Vuex.Store({
     },
 
     fetch_timer_local({commit,dispatch,state}, id) {
-      if (state.timers[id]) {
-        //timer is already there
-        console.log('already therealready therealready there')
-      } else {
-        // fetch the timer from database
-        db.collection('timers').doc(id).get()
+      return new Promise(async (resolve, reject)=>{
+        if (state.timers[id]) {
+          let timer = await dispatch('create', {
+            date: state.timers[id].date,
+            timezone: ''
+          })
+          return resolve(timer);
+          //timer is already there
+        } else {
+          // fetch the timer from database
+          db.collection('timers').doc(id).get()
           .then(async doc => {
-            console.log(doc.data())
+            let data = doc.data()
+            console.log({data})
+            // if data does not exist
+            if(!data){
+              return resolve({deleted: true})
+            }
             //add timer to associative array
-            commit('set_timer', {id, date: doc.data()})
-
-            let date = await dispatch('create', {
+            console.log('set timer fetch_timer_local')
+            commit('set_timer', {id, date: data})
+            
+            let timer = await dispatch('create', {
               date: doc.data().date,
               timezone: ''
             })
-            console.log(date)
-
+            if(timer.finished){
+              db.collection("timers").doc(id).delete().then(function() {
+                console.log("Document successfully deleted!");
+              }).catch(function(error) {
+                  console.error("Error removing document: ", error);
+              });
+            }
+            console.log({timer})
+            return resolve(timer);
           })
-      }
-
+        }
+      })
+        
 
     },
     monthToDays({commit}, num) {
@@ -132,6 +173,16 @@ export default new Vuex.Store({
         ).getDate();
       }
       return sum;
+    },
+    finishedTimer(){
+
+      return {
+        day: '00',
+        hour: '00',
+        min: '00',
+        sec: '00',
+        finished: true
+      }
     },
     // date to [day, hour, min, sec]
     async create({commit,dispatch}, {date,timezone}) {
@@ -155,16 +206,14 @@ export default new Vuex.Store({
       }
       //year to month
       if (diff[0] < 0) {
-        console.log("finished");
-        return;
+        return dispatch('finishedTimer')
       } else if (diff[0] > 0) {
         diff[1] += 12 * diff[0];
         diff[0] = 0;
       }
       if (diff[1] < 0) {
         //month
-        console.log("finished");
-        return;
+        return dispatch('finishedTimer')
       } else if (diff[1] > 0) {
         //month
         diff[2] += await dispatch('monthToDays', diff[1]);
@@ -187,8 +236,7 @@ export default new Vuex.Store({
       }
       if (diff[2] < 0) {
         //days
-        console.log("finished");
-        return
+        return dispatch('finishedTimer')
       }
 
       diff = diff.map(el => {

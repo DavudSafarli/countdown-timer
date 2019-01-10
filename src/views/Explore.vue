@@ -1,13 +1,28 @@
 <template>
   <div class="fullpage-page explore">
       <h1 class="text">Explore Timers</h1>
-      <div class="container">
-        <div class="search">
-          <input @keydown.tab="$event.preventDefault()" type="search" class="search-box" spellcheck="false" />
-          <span @click="click" class="search-button">
-              <span class="search-icon"></span>
-          </span>
-        </div>
+      <div class="searchbox container" spellcheck="false">
+        <input  @keydown.enter="search" placeholder="Search for a Keyword" ref="input" type="text" :class="{search: true, searchIsOpen: searchIsOpen}">
+        <svg @click="search" class="svg" x="0px" y="0px" viewBox="0 0 699 695" style="enable-background:new 0 0 699 695;" xml:space="preserve">
+          <g>
+            <path class="st0" d="M280.8,81.4C173.3,81.4,86,167.6,86,273.9c0,106.3,87.2,192.5,194.8,192.5c107.6,0,194.8-86.2,194.8-192.5
+              C475.7,167.6,388.4,81.4,280.8,81.4z M188.6,345.1c-2.9,0-5.8-0.9-8.2-2.8c-5.7-4.5-6.6-12.7-2.1-18.3l136.1-169.2
+              c4.5-5.6,12.8-6.5,18.5-2.1c5.7,4.5,6.7,12.6,2.1,18.3L198.9,340.2C196.3,343.4,192.4,345.1,188.6,345.1z M392,227.4L255.9,396.6
+              c-2.6,3.2-6.4,4.9-10.3,4.9c-2.9,0-5.8-0.9-8.2-2.8c-5.7-4.5-6.7-12.7-2.1-18.3l136.1-169.2c4.5-5.6,12.8-6.6,18.5-2.1
+              C395.6,213.6,396.5,221.8,392,227.4z"/>
+            <path class="st1" d="M675.6,601.2l-2.9-2.9l-71.1,70.3l1.7,1.7l18.9,18.6c12.1,12,37.8,5.9,57.4-13.5
+              c19.6-19.4,25.7-44.8,13.7-56.8L675.6,601.2L675.6,601.2z"/>
+            <polygon class="st2" points="655.2,581.4 584.1,651.6 601.5,668.6 672.6,598.3 670.6,596.3 670.5,596.3 	"/>
+            <path class="st1" d="M277,0.1C124,0.1,0,122.7,0,273.9c0,151.2,124,273.8,277,273.8c56.7,0,109.4-16.9,153.3-45.8l153.8,149.7
+              l71.1-70.2L502.5,432.7c32.4-44.8,51.6-99.5,51.6-158.8C554.1,122.7,430.1,0.1,277,0.1z M280.8,466.5
+              C173.3,466.5,86,380.3,86,273.9c0-106.3,87.2-192.5,194.8-192.5c107.6,0,194.8,86.2,194.8,192.5
+              C475.7,380.3,388.4,466.5,280.8,466.5z"/>
+            <path class="st3" d="M314.3,154.8L178.2,324c-4.5,5.6-3.6,13.8,2.1,18.3c2.4,1.9,5.3,2.8,8.2,2.8c3.9,0,7.7-1.7,10.3-4.9L334.9,171
+              c4.5-5.6,3.6-13.8-2.1-18.3C327.1,148.3,318.8,149.2,314.3,154.8z"/>
+            <path class="st3" d="M371.4,211.2L235.3,380.4c-4.5,5.6-3.6,13.8,2.1,18.3c2.4,1.9,5.3,2.8,8.2,2.8c3.9,0,7.7-1.7,10.3-4.9
+              L392,227.4c4.5-5.6,3.6-13.8-2.1-18.3C384.2,204.6,375.9,205.6,371.4,211.2z"/>
+          </g>
+        </svg>
       </div>
       <div class="content content-explore container">
         <div class="timers">
@@ -29,27 +44,6 @@
                     <!-- {{get_timers[j]}} -->  
                   </div>  
               </div>
-                <!-- <div v-for="i in 3" :key="i" class="flex">
-                  
-                    <div class="card-holder">
-                      <div class="card">
-                        <div class="title">New Year (2020)</div>
-                        <i class="goto fas fa-arrow-right"></i>
-                        <div class="date">Date: 2020 - 01 - 01  00:00:00</div>
-                        <div class="desc"></div>
-                        <div class="timezone">Asia/Baku</div>
-                      </div>
-                    </div>
-                    <div class="card-holder">
-                      <div class="card">
-                        <div class="title">New Year (2020)</div>
-                        <i class="goto fas fa-arrow-right"></i>
-                        <div class="date">Date: 2020 - 01 - 01  00:00:00</div>
-                        <div class="desc">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Incidunt, nostrum.</div>
-                        <div class="timezone">Asia/Baku</div>
-                      </div>
-                    </div>
-                </div> -->
                 <div @click="load" class="load">
                   <svg class="load" x="0px" y="0px" viewBox="0 0 405.456 405.456" style="enable-background:new 0 0 405.456 405.456;" xml:space="preserve" width="512px" height="512px">
                     <path d="M74.134,64.147c-4.985,0.078-9.911,2.163-13.438,5.688l-55,55C2.096,128.432,0,133.492,0,138.583 s2.096,10.151,5.697,13.75l183.281,183.281c3.599,3.601,8.659,5.697,13.75,5.697s10.151-2.096,13.75-5.697l183.281-183.281   c3.601-3.599,5.697-8.659,5.697-13.75s-2.096-10.151-5.697-13.75l-55-55c-3.598-3.591-8.651-5.681-13.734-5.681   c-5.083,0-10.136,2.09-13.734,5.681L202.728,184.397L88.166,69.833C84.499,66.169,79.318,64.07,74.134,64.147L74.134,64.147z" fill="#575757"/>
@@ -79,23 +73,34 @@ export default {
     },
   data() {
     return{
-      tweenLock: false,
+      searchIsOpen: false,
     }
   },
   methods: {
     ...mapMutations(['set_name']),
-    click(e) {
-        document.querySelector('.search-box').focus()
-        e.currentTarget.parentElement.classList.toggle('open');
-    },
     load() {
       this.splitTimers
+    },
+    search() {
+      this.searchIsOpen = !this.searchIsOpen
+      if(!this.searchIsOpen){
+        //closed, was open
+        this.$refs.input.blur();
+        let key = this.$refs.input.value.trim().split(' ')[0]
+        this.$store.dispatch('search', key)
+      }else{
+        //open
+        this.$refs.input.select();
+      }
+        
     }
   },
   computed: {
     ...mapGetters(['get_timers']),
     split_keys() {
+      console.log('split keys ')
       let keys = Object.keys(this.get_timers)
+      keys.reverse()
       let arr = [];
       let chunk = [];
       let l = keys.length
@@ -114,6 +119,33 @@ export default {
 </script>
 
 <style lang="scss">
+.svg{
+  width: 30px;
+  height: 32px;
+  order: 2 ;
+}
+.searchbox{
+  margin-top: 0px!important;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+}
+.searchIsOpen{
+  width: calc(200px + 12vw)!important;
+}
+.search{
+  outline: none;
+  width: 0px;
+  transition: 0.5s all;
+  order: 1;
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  font-family: 'Pacifico';
+  border-bottom: 1px solid rgba(30,30,30,0.3);
+  height: 35px;
+}
 .flex:nth-child(3) .card-holder  {
   margin-bottom: 0!important;
 }
@@ -227,7 +259,8 @@ export default {
 } 
 
 .container{
-  max-width: 1240px;
+  box-sizing: border-box;
+  max-width: 970px;
   margin: 0 auto;
   padding: 0 20px;
 }
@@ -246,123 +279,6 @@ $transition: all .5s ease;
 
 .explore{
     background: $bg;
-}
-
-.search-button, .search-icon {
-  box-sizing: border-box;
-}
-
-.search {
-  align-self: flex-start;
-  width: 50px;
-  max-width: 50px;
-  height: 50px;    
-  background-color: $search-bg-color;
-  position: relative;
-  overflow: hidden;
-  transition: $transition;
-  &:before {
-    content: '';
-    display: block;
-    width: 3px;
-    height: 100%;
-    position: relative;
-    background-color: $icon-color;
-    transition: $transition;
-  }
-  &.open {
-    max-width: 550px;
-    width: calc(90vw);
-    &:before {
-      height: 30px;
-      margin: 10px 0 0 30px;
-      position: absolute;
-    }
-  }
-}
-.search-box {
-  width: 100%;
-  height: 100%;
-  box-shadow: none;
-  border: none;
-  background: transparent;
-  color: #fff;
-  padding: 10px 100px 10px 45px;
-  font-size: 25px;
-  font-family: 'Pacifico';
-  &:focus {
-    outline: none;
-  }
-}
-@media screen and (max-width: 500px) {
-    .search-box {
-        font-size: calc(10px + 4vw);
-    }
-}
-.search-button {
-  width: 45px;
-  height: 45px;
-  display: block;
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 4px;
-  cursor: pointer;
-}
-
-.search-icon {
-  margin-top: 4px;
-  margin-left: 3px;
-  width: 25px;
-  height: 25px;
-  border-radius: 40px;
-  border: 3px solid $icon-color;
-  display: block;
-  position: relative;
-  transition: $transition;
-  &:before {
-    content: '';
-    width: 3px;
-    height: 12px;
-    position: absolute;
-    right: -4px;
-    top: 17px;
-    display: block;
-    background-color: $icon-color;
-    transform: rotate(-45deg);
-    transition: $transition;
-  }
-  &:after {
-    content: '';
-    width: 3px;
-    height: 6px;
-    position: absolute;
-    right: -8px;
-    top: 24px;
-    display: block;
-    background-color: $icon-color;
-    transform: rotate(-45deg);
-    transition: $transition;
-  }
-  .open & {
-    margin: 0;
-    margin-top: 5px;
-    width: 35px;
-    height: 35px;
-    border-radius: 60px;
-    &:before {
-      transform: rotate(52deg);
-      right: 11px;
-      top: 11px;
-      height: 14px;
-    }
-    &:after {
-      transform: rotate(-230deg);
-      right: 11px;
-      top: 3px;
-      height: 14px;
-    }
-  }
 }
 @media screen and (max-width: 800px) {
   .text{
@@ -389,4 +305,8 @@ $transition: all .5s ease;
     }
   }
 }
+.st0{fill:none;}
+.st1{fill:#616E7D;}
+.st2{fill:#AAD4C8;}
+.st3{fill:#82BFAB;}
 </style>
