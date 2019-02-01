@@ -322,21 +322,7 @@ export default {
   text-transform: uppercase;
 }
 
-.countdown .figure {
-  position: relative;
-  float: left;
-  height: 150px;
-  width: 120px;
-  //   max-width: px;
-  background-color: #fff;
-  border-radius: 5px;
-  -moz-box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2),
-    inset 2px 4px 0 0 rgba(255, 255, 255, 0.08);
-  -webkit-box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2),
-    inset 2px 4px 0 0 rgba(255, 255, 255, 0.08);
-  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2),
-    inset 2px 4px 0 0 rgba(255, 255, 255, 0.08);
-}
+
 
 .countdown .figure:not(:last-child) {
   margin-right: 0.7vw;
@@ -449,10 +435,25 @@ export default {
   left: 0;
   right: 0;
   margin: auto;
-  font-size: 130px;
+  font-size: 115px;
   font-family: "Lato";
   font-weight: 700;
   color: #2d3436;
+}
+.countdown .figure {
+  position: relative;
+  float: left;
+  height: 150px;
+  width: 120px;
+  //   max-width: px;
+  background-color: #fff;
+  border-radius: 5px;
+  -moz-box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2),
+    inset 2px 4px 0 0 rgba(255, 255, 255, 0.08);
+  -webkit-box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2),
+    inset 2px 4px 0 0 rgba(255, 255, 255, 0.08);
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.2),
+    inset 2px 4px 0 0 rgba(255, 255, 255, 0.08);
 }
 
 .countdown .figure .top-back {
@@ -466,20 +467,20 @@ export default {
 
 @media only screen and (max-width: 1200px) {
   .countdown .figure {
-    height: 125px;
+    height: 132px;
     width: 100px;
   }
   .countdown .figure > span {
-    font-size: 105px;
+    font-size: 100px;
   }
 }
 @media only screen and (max-width: 800px) {
   .countdown .figure {
-    height: 100px;
+    height: 102px;
     width: 80px;
   }
   .countdown .figure > span {
-    font-size: 85px;
+    font-size: 77px;
   }
 }
 @media only screen and (max-width: 600px) {
@@ -488,16 +489,16 @@ export default {
     width: 65px;
   }
   .countdown .figure > span {
-    font-size: 69px;
+    font-size: 62px;
   }
 }
 @media only screen and (max-width: 500px) {
   .countdown .figure {
-    height: 65px;
-    width: 51px;
+    height: 62px;
+    width: 50px;
   }
   .countdown .figure > span {
-    font-size: 57px;
+    font-size: 47px;
   }
 }
 </style>
