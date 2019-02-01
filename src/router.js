@@ -28,7 +28,6 @@ let pages = {
 let rulesFrom = {
 	index: () => {
 		store.state.stopHomeTimer = true;
-		// console.log(`set store.state.stopHomeTimer to ${store.state.stopHomeTimer}`)
 		return true;
 	},
 	create: ()=> true,
@@ -38,7 +37,6 @@ let rulesFrom = {
 let rules = {
 	index: ()=> {
 		store.state.stopHomeTimer = false;
-		// console.log(`set store.state.stopHomeTimer to ${store.state.stopHomeTimer}`)
 		return true
 	},
 	create: ()=> true,
@@ -54,9 +52,8 @@ let flag = false;
 router.beforeEach((to, from, next) => {
 	let $to = to.hash.replace('#', '')
 	$to = ($to == '')? 'index': $to
-	console.log($to)
+	
 	if(pages[$to] == undefined){
-		console.log('girdi', `#${$to}`)
 		// flag = true;
 		next(false)
 		return;
@@ -71,7 +68,7 @@ router.afterEach((to, from) => {
 	}
 	parallax();
 	function parallax(){
-		console.log({from, to})
+
 		let $transition_time = 1;
 		let perc = '%'
 		let $to = to.hash
@@ -106,7 +103,6 @@ router.afterEach((to, from) => {
 		if(rules[$to] && !rules[$to]()){
 			flag = true;
 			window.history.back();
-			console.log('girdim')
 			return;
 		}
 		// debugger

@@ -37,14 +37,14 @@ export default {
     mounted() {
         let vue = this
         if(document.readyState ==  'complete'){
-            console.log('complete')
+
             doWhenMount();
         }else{
             window.addEventListener('load', doWhenMount(), false)
         }
 
         function doWhenMount() {
-            console.log('fully loaded')
+            
             let date = [2020, 1, 2, 24, 0, 0];
             let time = vue.$store.dispatch("create", {
                 date,

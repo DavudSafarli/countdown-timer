@@ -46,14 +46,12 @@ export default {
   methods: {
     ...mapMutations(["set_futureDate", 'set_state']),
     calculateDays() {
-      console.log("calc");
       let arr = this.date.split(/(?:-|:|[T]|[Z])+/);
       let futureDate = [];
       for (let i = 0; i < 5; i++) {
         futureDate[i] = arr[i];
       }
       futureDate[5] = "00";
-      console.log(futureDate);
       this.set_futureDate(futureDate);
     },
     monthToDays(num) {

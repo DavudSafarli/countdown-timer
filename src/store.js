@@ -45,14 +45,12 @@ export default new Vuex.Store({
     get_explore: state => state.explore,
     get_state: state => state.state,
     get_mine: state => {
-      console.log('get_mine cagirildim')
       return id => {
         if(state.timers[id])
           return state.timers[id]
       }
     },
     get_timers: state => {
-      console.log('i was getted')
       return state.timers
     }
   },
@@ -70,7 +68,6 @@ export default new Vuex.Store({
     },
     set_timer(state, {id,date}) {
       // store timer locally
-      console.log('set timer')
       Vue.set(state.timers, id, date)
     }
   },
@@ -82,12 +79,9 @@ export default new Vuex.Store({
       .then(async docs=> {
         docs.forEach(doc => {
           commit('set_timer', {id: doc.id, date: doc.data()})
-          console.log(doc)
-          console.log(doc.data())
         });
       })
       .catch(e=>{
-        console.log(e)
       })
     },
     store({commit,state}, {router}) {
@@ -103,11 +97,8 @@ export default new Vuex.Store({
         timezone,
         searchFor: state.searchFor
       }
-      console.log(`this item is searchable for ${state.searchFor}`)
-      console.log(state.name, state.about, state.futureDate)
       var setDoc = db.collection('timers').add(data)
         .then(res => {
-          console.log('set timer store')
           commit('set_timer', {
             id: res.id,
             date: data
@@ -135,13 +126,11 @@ export default new Vuex.Store({
           db.collection('timers').doc(id).get()
           .then(async doc => {
             let data = doc.data()
-            console.log({data})
             // if data does not exist
             if(!data){
               return resolve({deleted: true})
             }
             //add timer to associative array
-            console.log('set timer fetch_timer_local')
             commit('set_timer', {id, date: data})
             
             let timer = await dispatch('create', {
@@ -150,12 +139,10 @@ export default new Vuex.Store({
             })
             if(timer.finished){
               db.collection("timers").doc(id).delete().then(function() {
-                console.log("Document successfully deleted!");
               }).catch(function(error) {
                   console.error("Error removing document: ", error);
               });
             }
-            console.log({timer})
             return resolve(timer);
           })
         }
@@ -256,7 +243,6 @@ export default new Vuex.Store({
       }
 
       let offset = await (Date.now() - now);
-      console.log(offset);
       if (offset > 1000) {
         // bla bla bla
       }

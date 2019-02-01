@@ -12,7 +12,7 @@ export default {
     methods: {
         a(e) {
             this.stop = true;
-            console.log('fulpageden dunyayaa fulpageden dunyayaa fulpageden dunyayaa fulpageden dunyayaa')
+            
             let href = e.currentTarget.getAttribute('href')
             this.$router.push(href)
         },

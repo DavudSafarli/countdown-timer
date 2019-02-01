@@ -187,26 +187,13 @@ export default {
         for (let i = 0; i < l; i++) {
           figure_vals[i] = arr[i].querySelector(".top").innerHTML;
         }
-        // console.log(value, arr, figure_vals)
-        // if(value != Math.pow(10, l - 1)){
+
         if (true) {
           for (let i = 0; i < l; i++) {
             if (figure_vals[i] !== value[i])
               this.animateFigure(arr[i], value[i]);
           }
-        } else {
-          // for (let i = 0; i < arr.length; i++) {
-          //     if(figure_vals[i] !== "0") {
-          //         this.animateFigure(arr[i], 0);
-          //         continue
-          //     }
-          //     if (figure_vals[i] !== figure_vals[i-1]){
-          //         this.animateFigure(arr[i], value[i-1]);
-          //     }
-          // }
-          // if (fig_1_value !== "0") this.animateFigure($el_1, 0);
-          // if (fig_2_value !== val_1) this.animateFigure($el_2, val_1);
-        }
+        } 
       },
       animateFigure: function($el, value) {
         var that = this,
@@ -256,26 +243,15 @@ export default {
           value = "0" + value;
         }
         if (true) {
-          // console.log(value)
           // Animate only if the figure has changed
           if (fig_1_value !== value[0]) this.animateFigure($el_1, value[0]);
           if (fig_2_value !== value[1]) this.animateFigure($el_2, value[1]);
         }
-        // else {
-        //     // If we are under 10, replace first figure with 0
-        //     if (fig_1_value !== "0") this.animateFigure($el_1, 0);
-        //     if (fig_2_value !== val_1) this.animateFigure($el_2, val_1);
-        // }
       }
     });
 
     if (this.day && !this.stop) Countdown.init();
   },
-  watch: {
-    stop() {
-      console.log(this.stop)
-    }
-  }
 };
 </script>
 

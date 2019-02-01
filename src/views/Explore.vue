@@ -98,7 +98,7 @@ export default {
   computed: {
     ...mapGetters(['get_timers']),
     split_keys() {
-      console.log('split keys ')
+      
       let keys = Object.keys(this.get_timers)
       keys.reverse()
       let arr = [];

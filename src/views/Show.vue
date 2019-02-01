@@ -36,7 +36,6 @@ export default {
     computed: {
         ...mapGetters(["get_mine"]),
         data(){
-            console.log('a')
             return this.get_mine(this.id)
         }
     },
